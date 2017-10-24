@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="exop:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="exop.war">
-      <element id="artifact" artifact-name="exop:war exploded" />
-    </root>
-  </artifact>
-</component>
