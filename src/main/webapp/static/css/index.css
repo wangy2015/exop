@@ -1,0 +1,17 @@
+.west {
+    width:180px;
+    padding:10px;
+}
+.south {
+    height:25px;
+    background:#B3DFDA;
+    padding:10px;
+    text-align:right;
+    overflow: hidden;
+}
+.file-box {
+    width:50%
+}
+.submit-btn {
+    width:100px
+}
