@@ -1,5 +1,6 @@
 package com.exop.controller;
 
+import com.exop.model.Org;
 import com.exop.service.IndexService;
 import com.exop.service.TestService;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class IndexController {
     @RequestMapping(value="/index",method= RequestMethod.GET)
     public ModelAndView index(HttpServletRequest request){
         ModelAndView mv=new ModelAndView();
-        mv.setViewName("index");
+        mv.setViewName("search");
         return mv;
     }
 
@@ -40,5 +42,11 @@ public class IndexController {
         String path = this.indexService.uploadFile(file);
         result.put("path", path);
         return result;
+    }
+
+    @RequestMapping(value="/getOrgList",method= RequestMethod.GET)
+    @ResponseBody
+    public List<Org> getOrgList() {
+        return this.indexService.getOrgList();
     }
 }
