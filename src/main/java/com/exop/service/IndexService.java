@@ -4,6 +4,9 @@ import com.exop.dao.OrgMapper;
 import com.exop.dao.RecordMapper;
 import com.exop.model.Org;
 import com.exop.model.OrgExample;
+import com.exop.model.Record;
+import com.exop.model.RecordExample;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +34,22 @@ public class IndexService {
         OrgExample oe = new OrgExample();
         oe.setOrderByClause("org_order");
         return orgMapper.selectByExample(oe);
+    }
+
+    public int insertRecord(Record record) {
+        return this.recordMapper.insert(record);
+    }
+
+    public List<Record> findRecords(String orgId, String fileMonth) {
+        RecordExample re = new RecordExample();
+        RecordExample.Criteria criteria = re.createCriteria();
+        if (orgId != null && !"".equals(orgId)) {
+            criteria.andOrgIdEqualTo(orgId);
+        }
+        if (fileMonth != null && !"".equals(fileMonth)) {
+            criteria.andFileMonthEqualTo(fileMonth);
+        }
+        return this.recordMapper.selectByExample(re);
     }
 
     public String uploadFile(MultipartFile file) throws IOException {

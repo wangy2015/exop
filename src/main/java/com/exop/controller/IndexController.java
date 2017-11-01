@@ -1,6 +1,7 @@
 package com.exop.controller;
 
 import com.exop.model.Org;
+import com.exop.model.Record;
 import com.exop.service.IndexService;
 import com.exop.service.TestService;
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by 王勇 on 2017/10/24.
@@ -37,11 +35,26 @@ public class IndexController {
 
     @RequestMapping(value = "/upload",method= RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> upload(@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request) throws IOException {
-        Map<String, Object> result = new HashMap<String, Object>();
+    public Record upload(@RequestParam(value = "file", required = true) MultipartFile file,
+                                      @RequestParam(value = "orgId", required = true) String orgId,
+                                      @RequestParam(value = "fileMonth", required = true) String fileMonth,
+                                      HttpServletRequest request) throws IOException {
         String path = this.indexService.uploadFile(file);
-        result.put("path", path);
-        return result;
+        Record record = new Record();
+        record.setOrgId(orgId);
+        record.setFileMonth(fileMonth);
+        record.setFilePath(path);
+        record.setEntryTime(new Date());
+        this.indexService.insertRecord(record);
+        return record;
+    }
+
+    @RequestMapping(value = "/findRecords",method= RequestMethod.POST)
+    @ResponseBody
+    public List<Record> findRecords(@RequestParam(value = "orgId", required = false) String orgId,
+                         @RequestParam(value = "fileMonth", required = false) String fileMonth,
+                         HttpServletRequest request) throws IOException {
+        return this.indexService.findRecords(orgId, fileMonth);
     }
 
     @RequestMapping(value="/getOrgList",method= RequestMethod.GET)
